@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/header"/>
+    <include layout="@layout/channel_header"/>
+    <com.google.android.youtube.ui.TabRow
+        android:id="@+id/tabrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.google.android.youtube.ui.Workspace
+        android:id="@+id/workspace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/uploads"
+            android:tag="@string/channel_uploads"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ListView
+            android:id="@+id/favorites"
+            android:tag="@string/channel_favorites"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ListView
+            android:id="@+id/activity"
+            android:tag="@string/channel_activity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ListView
+            android:id="@+id/playlists"
+            android:tag="@string/channel_playlists"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:drawable/divider_horizontal_dark"/>
+    </com.google.android.youtube.ui.Workspace>
+</LinearLayout>

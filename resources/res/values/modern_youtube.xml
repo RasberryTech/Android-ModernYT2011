@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Replace this value with a YouTube Data API v3 browser/server key before building. -->
+    <string name="modern_youtube_api_key">PUT_YOUR_YOUTUBE_DATA_API_KEY_HERE</string>
+</resources>

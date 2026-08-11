@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="2026"
+    android:versionName="2.0.26"
+    package="com.google.android.youtube">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH"/>
+    <uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH.youtube"/>
+    <uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH.YouTubeUser"/>
+    <uses-sdk android:minSdkVersion="8"/>
+    <application
+        android:theme="@style/Theme"
+        android:label="@string/application_name"
+        android:icon="@drawable/ic_launcher_youtube"
+        android:name="YouTubeApplication">
+        <activity
+            android:name="HomeActivity"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="vnd.youtube.launch"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ResultsActivity"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.MEDIA_SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="ResultsActivity$ShellActivity"
+            android:enabled="false"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ChannelActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="MyChannelActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="CategoriesActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="BrowseActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="PlaylistActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="WatchActivity"
+            android:screenOrientation="sensor"
+            android:configChanges="orientation|keyboardHidden"
+            android:allowTaskReparenting="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="http"
+                    android:host="www.youtube.com"
+                    android:pathPrefix="/watch"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="http"
+                    android:host="www.youtube.com"
+                    android:pathPrefix="/v/"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="vnd.youtube"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/settings"
+            android:name="SettingsActivity"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEVELOPMENT_PREFERENCE"/>
+            </intent-filter>
+        </activity>
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".ResultsActivity"/>
+        <provider
+            android:name="com.google.android.youtube.suggest.SuggestionProvider"
+            android:authorities="com.google.android.youtube.SuggestionProvider"/>
+        <receiver android:name="com.google.android.youtube.widget.WidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.google.android.youtube.action.widget_update"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info"/>
+        </receiver>
+        <service android:name="com.google.android.youtube.widget.WidgetProvider.UpdateService"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.youtube.widget.WidgetActivity"
+            android:taskAffinity="com.google.android.youtube.widget"
+            android:configChanges="orientation|keyboardHidden"/>
+        <receiver android:name="ResultsActivity$GservicesBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.google.gservices.intent.action.GSERVICES_CHANGED"/>
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
