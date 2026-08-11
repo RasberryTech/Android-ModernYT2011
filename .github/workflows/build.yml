@@ -33,6 +33,15 @@ jobs:
             cp -R resources/assets app/src/main/
           fi
 
+          # The decompiler produced a class named R that also contains generated
+          # resource constants. Android Gradle generates the real public R class,
+          # so keep the legacy Runnable under a different name in the build copy.
+          if [ -f app/src/main/java/com/google/android/youtube/R.java ]; then
+            mv app/src/main/java/com/google/android/youtube/R.java app/src/main/java/com/google/android/youtube/LegacyR.java
+            sed -i 's/final class R implements Runnable/final class LegacyR implements Runnable/' app/src/main/java/com/google/android/youtube/LegacyR.java
+            sed -i 's/\bR(/LegacyR(/g; s/\bR\s\+\([A-Za-z_$][A-Za-z0-9_$]*\)/LegacyR \1/g' app/src/main/java/com/google/android/youtube/LegacyR.java app/src/main/java/com/google/android/youtube/*.java
+          fi
+
           # Decompiled legacy 9-patch files can lose their Android chunk metadata.
           # Keep their pixels and resource names, but compile them as ordinary PNGs
           # so AAPT2 can consume them without redesigning the UI.
