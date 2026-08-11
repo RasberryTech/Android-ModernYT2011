@@ -20,19 +20,25 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Extract decompiled project
+      - name: Prepare extracted project
         shell: bash
         run: |
+          set -euo pipefail
           rm -rf app/src/main
-          mkdir -p app/src/main
-          unzip -q YT2011_decompiled.zip -d /tmp/yt2011
-          ROOT="/tmp/yt2011/YT2011_decompiled"
-          cp -R "$ROOT/sources/." app/src/main/java/
-          cp -R "$ROOT/resources/res" app/src/main/
-          cp "$ROOT/resources/AndroidManifest.xml" app/src/main/
-          if [ -d "$ROOT/resources/assets" ]; then
-            cp -R "$ROOT/resources/assets" app/src/main/
+          mkdir -p app/src/main/java
+          cp -R sources/. app/src/main/java/
+          cp -R resources/res app/src/main/
+          cp resources/AndroidManifest.xml app/src/main/
+          if [ -d resources/assets ]; then
+            cp -R resources/assets app/src/main/
           fi
+
+          # Decompiled legacy 9-patch files can lose their Android chunk metadata.
+          # Keep their pixels and resource names, but compile them as ordinary PNGs
+          # so AAPT2 can consume them without redesigning the UI.
+          find app/src/main/res -type f -name '*.9.png' -print0 | while IFS= read -r -d '' f; do
+            mv "$f" "${f%.9.png}.png"
+          done
 
       - name: Install Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -43,6 +49,7 @@ jobs:
         run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ModernYT2011-debug
