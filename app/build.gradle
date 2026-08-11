@@ -22,4 +22,12 @@ android {
             manifest.srcFile 'src/main/AndroidManifest.xml'
         }
     }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
 }
